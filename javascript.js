@@ -5,6 +5,59 @@
 // When the page is opened, the deck is initialized in a NONRANDOM order using nested for loops.
 // When the game is begun, the deck is split between the two players 
 
+class Card {
+    constructor(suit, value, score){
+        this.suit = suit;
+        this.value = value;
+        this.score = score;
+    }
+}
+
+class Deck {
+    constructor(){
+        this.length = 52;
+        this.cards = [];
+
+        let suit = ["spades","diamonds","clubs","hearts"];
+        let number = [0,1,2,3,4,5,6,7,8,9,0,11,12];
+        let rank = ["ace","one","two","three","four","five","six","seven","eight","nine","ten","jack","queen","king"];
+    
+    
+    for (let i of suit) {
+        for (let j of number) {
+            this.cards.push(new Card([i],[j],rank[j-1]))
+        }
+    }
+    console.log(this.cards);  // TEST LOGGER - COMMENT OUT WHEN FINISHED
+        
+}
+
+    draw() {
+        let chosenCard = this.cards.splice([(Math.floor(Math.random()*this.cards.length))], 1)
+        return chosenCard
+    }
+
+    shuffle() {
+        for (let i = this.cards.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        console.log(this.cards);  // TEST LOGGER - COMMENT OUT WHEN FINISHED
+    }
+
+    split() {
+        for(i=0; i<this.length; i++) {
+            if(i % 2 === 0) {
+                this.cards[i] // INCOMPLETE - FIGURE OUT HOW TO GET PLAYER CLASS TO CALL PROPERLY
+            }
+            else if(i % 2 !== 0) {
+                this.cards[i] // INCOMPLETE
+            }
+        }
+    }
+}
+
+
 // INITIALIZE PLAYERS - SPLIT DECK
 // -- Create player class
 //      - property: name
@@ -12,6 +65,15 @@
 //      - property: score
 // When a game is begun, the deck is split randomly between the two players using a for loop that selects a random index each iteration.
 // Additionally, the loop must alternate between the two players to split the deck.
+
+class Player {
+    constructor(name, library, points) {
+        this.name = name;
+        this.library = library;
+        this.points = points;
+    }
+
+}
 
 // COMMAND - EXECUTE ROUND (DRAW)
 // -- "draws" index[0] of each player's library and adds them to the "pot".  
