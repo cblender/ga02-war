@@ -5,6 +5,10 @@
 // When the page is opened, the deck is initialized in a NONRANDOM order using nested for loops.
 // When the game is begun, the deck is split between the two players 
 
+// INTERNAL FORMATTING:
+// The "TEST LOGGER" comment indicates a line of code that should be removed after the program is complete.
+// This comment should ALWAYS be indented exactly 16 "Tabs".
+
 class Card {
     constructor(suit, value, score){
         this.suit = suit;
@@ -19,41 +23,48 @@ class Deck {
         this.cards = [];
 
         let suit = ["spades","diamonds","clubs","hearts"];
-        let number = [0,1,2,3,4,5,6,7,8,9,0,11,12];
-        let rank = ["ace","one","two","three","four","five","six","seven","eight","nine","ten","jack","queen","king"];
+        let number = [0,1,2,3,4,5,6,7,8,9,10,11,12];
+        let rank = ["two","three","four","five","six","seven","eight","nine","ten","jack","queen","king","ace"];
     
     
+    // This loop is taken from the "OOP Cards" lab.  It uses nested for loops to construct the deck array.
     for (let i of suit) {
         for (let j of number) {
-            this.cards.push(new Card([i],[j],rank[j-1]))
+            this.cards.push(new Card([i],[j+2],rank[j]))
         }
     }
-    console.log(this.cards);  // TEST LOGGER - COMMENT OUT WHEN FINISHED
-        
-}
-
-    draw() {
+    console.log(this.cards);                                    // TEST LOGGER - COMMENT OUT WHEN FINISHED    
+    }
+    
+    drawRandom() {
+        // This method draws a random card from the deck, but is not used for the game of WAR
         let chosenCard = this.cards.splice([(Math.floor(Math.random()*this.cards.length))], 1)
         return chosenCard
     }
 
+   
     shuffle() {
+        // This very nice for loop is referred to as the "Fisher-Yates Shuffle".  I did not design it.
         for (let i = this.cards.length - 1; i > 0; i--) {
-            let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-            [array[i], array[j]] = [array[j], array[i]];
+            let j = Math.floor(Math.random() * (i + 1));
+            [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
         }
-        console.log(this.cards);  // TEST LOGGER - COMMENT OUT WHEN FINISHED
+        console.log(this.cards);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
     }
 
-    split() {
-        for(i=0; i<this.length; i++) {
-            if(i % 2 === 0) {
-                this.cards[i] // INCOMPLETE - FIGURE OUT HOW TO GET PLAYER CLASS TO CALL PROPERLY
+    split(player1, player2) {
+        let i = 0;
+        for(i=0; i<this.cards.length; i++) {
+            let chosenCard = this.cards[i];
+            if(i === 0 || i % 2 === 0) {
+                player1.library.push(chosenCard);
             }
             else if(i % 2 !== 0) {
-                this.cards[i] // INCOMPLETE
+                player2.library.push(chosenCard);
             }
         }
+        console.log(playerOne.library);                         // TEST LOGGER - COMMENT OUT WHEN FINISHED
+        console.log(playerTwo.library);                         // TEST LOGGER - COMMENT OUT WHEN FINISHED
     }
 }
 
@@ -67,10 +78,11 @@ class Deck {
 // Additionally, the loop must alternate between the two players to split the deck.
 
 class Player {
-    constructor(name, library, points) {
+    constructor(name, library, points, pile) {
         this.name = name;
         this.library = library;
         this.points = points;
+        this.pile = pile;
     }
 
 }
@@ -88,3 +100,17 @@ class Player {
 // -- Prints the final score and declares a winner (the player with the higher score wins)
 // -- Resets player classes, emptying their properties
 // -- Resets deck, emptying the cards array and refilling it.
+
+
+// RUNTIME
+
+const WAR = new Deck();
+
+var playerOne = new Player(prompt("Player 1: Input your name"),[],0);
+
+console.log(playerOne);
+
+var playerTwo = new Player(prompt("Player 2: Input your name"),[],0);
+
+console.log(playerTwo);
+
