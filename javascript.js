@@ -125,9 +125,9 @@ class Deck {
             this.p2Score = p2.library.length;
             this.rounds++;
             
-            console.log(this.rounds);                                           // TEST LOGGER - COMMENT OUT WHEN FINISHED
-            console.log(this.p1Score);                                           // TEST LOGGER - COMMENT OUT WHEN FINISHED
-            console.log(this.p2Score);                                           // TEST LOGGER - COMMENT OUT WHEN FINISHED
+           // console.log(this.rounds);                                           // TEST LOGGER - COMMENT OUT WHEN FINISHED
+           // console.log(this.p1Score);                                           // TEST LOGGER - COMMENT OUT WHEN FINISHED
+           // console.log(this.p2Score);                                           // TEST LOGGER - COMMENT OUT WHEN FINISHED
 
 
         } // END WHILE LOOP OF DECK.DRAW()
@@ -237,7 +237,7 @@ class Deck {
     // - Announces duration of match (number of rounds)
     end(p1,p2) {
         
-        console.log(this.victor);                                   // TEST LOGGER - COMMENT OUT WHEN FINISHED
+        // console.log(this.victor);                                   // TEST LOGGER - COMMENT OUT WHEN FINISHED
 
         if(this.victor){
             console.log("GAME OVER!!  ",this.victor," is the winner!!")
@@ -301,8 +301,6 @@ class Deck {
 //      - property: name
 //      - property: library
 //      - property: score
-
-
 class Player {
     constructor(name, library, points, pile) {
         this.name = name;
