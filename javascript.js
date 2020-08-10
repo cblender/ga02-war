@@ -43,7 +43,9 @@ class Deck {
             this.cards.push(new Card(i,rank[j],(j+2)))
         }
     }
-    console.log("TEST ONE ",this.cards);                                    // TEST LOGGER - COMMENT OUT WHEN FINISHED    
+    console.log("A deck of cards was created!  It needs to be shuffled and split!");
+
+    // console.log("TEST ONE ",this.cards);                                    // TEST LOGGER - COMMENT OUT WHEN FINISHED    
     }
 
 // COMMAND: EXECUTE ROUND (DRAW)
@@ -64,11 +66,13 @@ class Deck {
             pot.push(card1);
             pot.push(card2);
             
+            /*
             console.log("TEST WHILE ",p1.name);                                 // TEST LOGGER - COMMENT OUT WHEN FINISHED
             console.log("TEST WHILE ",p2.name);                                 // TEST LOGGER - COMMENT OUT WHEN FINISHED
             console.log("TEST WHILE ",card1);                                   // TEST LOGGER - COMMENT OUT WHEN FINISHED
             console.log("TEST WHILE ",card2);                                   // TEST LOGGER - COMMENT OUT WHEN FINISHED
             console.log("TEST WHILE ",pot);                                     // TEST LOGGER - COMMENT OUT WHEN FINISHED
+            */
                                               
             if (card1[0].score > card2[0].score) {
                 console.log(p1.name," played a ",card1[0].value," of ",card1[0].suit,".  ",p2.name," played a ",card2[0].value," of ",card2[0].suit,".");
@@ -80,7 +84,7 @@ class Deck {
 
                 pot = [];
 
-                console.log("TEST IF P1 ",p1.library);                        // TEST LOGGER - COMMENT OUT WHEN FINISHED
+                // console.log("TEST IF P1 ",p1.library);                        // TEST LOGGER - COMMENT OUT WHEN FINISHED
             }
 
             else if (card1[0].score < card2[0].score) {
@@ -93,7 +97,7 @@ class Deck {
 
                 pot = [];
 
-                console.log("TEST IF P2 ",p2.library);                        // TEST LOGGER - COMMENT OUT WHEN FINISHED
+                // console.log("TEST IF P2 ",p2.library);                        // TEST LOGGER - COMMENT OUT WHEN FINISHED
             }
 
             else if (card1[0].score === card2[0].score) {
@@ -104,7 +108,7 @@ class Deck {
                 pot.push(war2);
                 console.log("You each put the top card of your library into the pot, then there is another round.");
                 
-                console.log("TEST IF WAR ",pot);                               // TEST LOGGER - COMMENT OUT WHEN FINISHED
+                // console.log("TEST IF WAR ",pot);                               // TEST LOGGER - COMMENT OUT WHEN FINISHED
             }
 
         } // END WHILE LOOP
@@ -136,7 +140,9 @@ class Deck {
             let j = Math.floor(Math.random() * (i + 1));
             [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
         }
-        console.log(this.cards);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
+        console.log("The deck was shuffled!");
+
+        // console.log(this.cards);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
     }
 
 
@@ -154,10 +160,11 @@ class Deck {
                 p2.library.push(chosenCard);
             }
         }
+        console.log("The deck has been split!");
         console.log(playerOne.name," has ",(playerOne.library.length)," cards.  ",playerTwo.name," has ",(playerTwo.library.length)," cards.")
 
-        console.log(p1.library);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
-        console.log(p2.library);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
+        // console.log(p1.library);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
+        // console.log(p2.library);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
     }
 
 // COMMAND - RESET
@@ -176,6 +183,7 @@ class Deck {
             console.log("The game is a draw!!");
         }
         d = new Deck();
+        alert("The game was reset!");
         p1 = new Player(prompt("Player 1: Input your name"),[],0,[]);
         p2 = new Player(prompt("Player 2: Input your name"),[],0,[]);
     }
@@ -200,26 +208,13 @@ class Player {
 
 
 
-
-
-
 // RUNTIME
-
-const war = new Deck();
 
 var playerOne = new Player(prompt("Player 1: Input your name"),[],0,[]);
 
-console.log(playerOne.name);
-
 var playerTwo = new Player(prompt("Player 2: Input your name"),[],0,[]);
-
-console.log(playerTwo.name);
-
-war.shuffle();
-
-war.split(playerOne, playerTwo);
 
 console.log(playerOne.name," has ",(playerOne.library.length)," cards.  ",playerTwo.name," has ",(playerTwo.library.length)," cards.")
 
-war.draw(playerOne, playerTwo);
+const war = new Deck();
 
