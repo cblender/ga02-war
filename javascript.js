@@ -40,26 +40,30 @@ class Deck {
         var victor = "";
     
     // This loop is taken from the "OOP Cards" lab.  It uses nested for loops to construct the deck array.
-    for (let i of suit) {
-        for (let j of number) {
-            this.cards.push(new Card(i,rank[j],(j+2)))
+    // NOTE: I WOULD LIKE TO IMPLEMENT variable deck lengths using a COUNT variable inside the secondary FOR loop.  The idea is that when the DECK is constructed,
+    // the player can input a number, and after that many triggers of the secondary FOR loop, it will not trigger again (add "&& count < max" to parameters, etc.)
+    for (let i of number) {
+        for (let j of suit) {
+            this.cards.push(new Card(j,rank[i],(i+2)))  
         }
     }
+    
     console.log("A deck of cards was created!  It needs to be shuffled and split!");
 
-    // console.log("TEST ONE ",this.cards);                                    // TEST LOGGER - COMMENT OUT WHEN FINISHED    
+     console.log("TEST ONE ",this.cards);                                    // TEST LOGGER - COMMENT OUT WHEN FINISHED    
     }
 
     // COMMAND: EXECUTE ROUND (DRAW)
-// -- "draws" index[0] of each player's library and adds them to the "pot".  
-// -- The player with the higher-scoring card is the winner of that round.
-// -- In the event of a tie, the cards remain in the pot and the new index[0] cards are also added to the pot directly.  Then, another round occurs.
-// -- Once the winner is decided, all cards from the pot are added to the END (bottom) of the winner's library.
-// -- At the end of the round, if one player has all 52 cards, the game ends and that player is the winner.
+    // -- "draws" index[0] of each player's library and adds them to the "pot".  
+    // -- The player with the higher-scoring card is the winner of that round.
+    // -- In the event of a tie, the cards remain in the pot and the new index[0] cards are also added to the pot directly.  Then, another round occurs.
+    // -- Once the winner is decided, all cards from the pot are added to the END (bottom) of the winner's library.
+    // -- At the end of the round, if one player has all 52 cards, the game ends and that player is the winner.
 
     draw(p1, p2) {
         var pot = [];
         var winner = "";
+        var victorDraw = this.victor;
         var i = 0;
 
         while(!winner){
@@ -120,13 +124,10 @@ class Deck {
         // BELOW: NON-VICTORY STATES
         if (p1.library.length != 0 && p2.library.length != 0 && winner){
             console.log(winner," wins the round!")
+            console.log(p1.name," has ",(p1.library.length)," cards.  ",p2.name," has ",(p2.library.length)," cards.")
         }
         else if ((p1.library.length != 0 && p2.library.length != 0) && pot.length != 0) {
             console.log("There are ",pot.length," cards in the pot.")
-        }
-
-        if(winner) {
-            console.log(p1.name," has ",(p1.library.length)," cards.  ",p2.name," has ",(p2.library.length)," cards.")
         }
 
         // BELOW: VICTORY STATES
@@ -134,10 +135,16 @@ class Deck {
             
             if (p1.library.length === 0) {
                 winner = p2.name;
+                for(i=0;i<pot.length;i++){
+                    p2.library.push(pot[i][0]);
+                }
                 this.victor = p2.name;
             }
             else if (p2.library.length === 0) {
-                winner = p2.name;
+                winner = p1.name;
+                for(i=0;i<pot.length;i++){
+                    p1.library.push(pot[i][0]);
+                }
                 this.victor = p1.name;
             }
             
@@ -147,27 +154,17 @@ class Deck {
         else if ((p1.library.length === 0 || p2.library.length === 0) && pot.length === 0) {
             
             if (p1.library.length === 0) {
-                victor = p2.name;
+                this.victor = p2.name;
             }
             else if (p2.library.length === 0) {
-                victor = p1.name;
+                this.victor = p1.name;
             }
 
             // CALL THIS.END HERE!!!
             this.end();
         }
-        
-
-    } // END DRAW FUNCTION
+    } // END DRAW COMMAND
     
-
-    // COMMAND: DRAW A RANDOM CARD (***DEPRECIATED***)    
-    drawRandom() {
-        // This method draws a random card from the deck, but is not used for the game of WAR
-        let chosenCard = this.cards.splice([(Math.floor(Math.random()*this.cards.length))], 1)
-        return chosenCard
-    }
-
 
 
     // COMMAND: SHUFFLE DECK
@@ -181,6 +178,7 @@ class Deck {
 
         // console.log(this.cards);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
     }
+
 
 
     // COMMAND: SPLIT DECK BETWEEN PLAYERS
@@ -204,13 +202,65 @@ class Deck {
         // console.log(p2.library);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
     }
 
-    // COMMAND - RESET (***DEPRECIATED***)
+
+
+    // COMMAND - START
+    // - Resets classes (passed as parameters to the method)
+    // - Initializes new Deck and Players
+    start(p1, p2, d) {
+        if (this.rounds) {
+            this.end();
+        }
+        
+        d = new Deck(prompt("Please enter the number of cards to use (max 52)."));
+        p1 = new Player(prompt("Player One: please input your name."),[],0,[]);
+        p2 = new Player(prompt("Player Two: please input your name"),[],0,[]);
+
+        console.log("A new game of WAR! has begun!");
+        console.log(p1.name," is player one.  ",p2.name," is player two.");
+        alert("A new game of WAR! has begun!");
+    }
+
+
+
+    // COMMAND - END
+    // - Checks VICTOR variable
+    // - Announces winner
+    // - Announces duration of match (number of rounds)
+    end() {
+        
+        console.log(this.victor);                                   // TEST LOGGER - COMMENT OUT WHEN FINISHED
+
+        if(this.victor){
+            console.log("GAME OVER!!  ",this.victor," is the winner!!")
+            alert("GAME OVER!!  ",this.victor," is the winner!!")
+        }
+        else if(!this.victor){
+            console.log("GAME OVER!!  The game was a tie!");
+        }
+        
+        console.log("The game lasted ",this.rounds," rounds!")
+    }
+    
+
+
+
+    /* COMMAND: DRAW A RANDOM CARD (***DEPRECIATED***)    
+    drawRandom() {
+        // This method draws a random card from the deck, but is not used for the game of WAR
+        let chosenCard = this.cards.splice([(Math.floor(Math.random()*this.cards.length))], 1)
+        return chosenCard
+    }
+    */
+
+
+    
+    /* COMMAND - RESET (***DEPRECIATED***)
     // -- Prints the final score and declares a winner (the player with the higher score wins)
     // -- Resets player classes, emptying their properties
     // -- Resets deck, emptying the cards array and refilling it.
     // (*** DEPRECIATED ***)
 
-    /*
     reset(d, p1, p2) {
         console.log(p1.name," has ",(p1.library.length)," cards.  ",p2.name," has ",(p2.library.length)," cards.")
         if (p1.library.length > p2.library.length){
@@ -228,45 +278,7 @@ class Deck {
         p2 = new Player(prompt("Player 2: Input your name"),[],0,[]);
     }
     */
-
-    // COMMAND - START
-    // - Resets classes (passed as parameters to the method)
-    // - Initializes new Deck and Players
-    start(d, p1, p2) {
-        if (this.rounds) {
-            this.end();
-        }
-        console.log("A new game of WAR! has begun!  The name of this deck is ",d,"!");
-        alert("A new game of WAR! has begun!");
-        if(d){
-            // INSERT NEW DECK CONSTRUCTOR HERE 
-        }
-        if(!d){
-            this = new Deck();
-        }
-        p1 = new Player(p1,[],0,[]);
-        p2 = new Player(p2,[],0,[]);
-    }
-
-    // COMMAND - END
-    // - Checks VICTOR variable
-    // - Announces winner
-    // - Announces duration of match (number of rounds)
-    end() {
-        if(this.victor){
-            console.log("GAME OVER!!  ",victor," is the winner!!")
-            alert("GAME OVER!!  ",victor," is the winner!!")
-        }
-        else if(!this.victor){
-            console.log("GAME OVER!!  ",victor," is the winner!!")
-            alert("GAME OVER!!  ",victor," is the winner!!")
-        }
-        
-        console.log("The game lasted ",this.rounds," rounds!")
-    }
-    
 }
-
 
 // -- Create player class
 //      - property: name
@@ -288,7 +300,9 @@ class Player {
 
 // RUNTIME
 
+var playerOne = new Player(prompt("Player One: please input your name."),[],0,[]);
+var playerTwo = new Player(prompt("Player Two: please input your name"),[],0,[]);
+console.log(playerOne.name," is player one.  ",playerTwo.name," is player two.");
 const war = new Deck();
 
-console.log("A new game has begun!  Use the formatting ''war.[command]'' to operate the game.")
-
+console.log("Welcome to WAR!  Refer to the README file if you need help!  Have fun!");
