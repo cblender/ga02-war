@@ -35,7 +35,9 @@ class Deck {
         let suit = ["spades","diamonds","clubs","hearts"];
         let number = [0,1,2,3,4,5,6,7,8,9,10,11,12];
         let rank = ["two","three","four","five","six","seven","eight","nine","ten","jack","queen","king","ace"];
-    
+
+        var rounds = 0;
+        var victor = "";
     
     // This loop is taken from the "OOP Cards" lab.  It uses nested for loops to construct the deck array.
     for (let i of suit) {
@@ -48,7 +50,7 @@ class Deck {
     // console.log("TEST ONE ",this.cards);                                    // TEST LOGGER - COMMENT OUT WHEN FINISHED    
     }
 
-// COMMAND: EXECUTE ROUND (DRAW)
+    // COMMAND: EXECUTE ROUND (DRAW)
 // -- "draws" index[0] of each player's library and adds them to the "pot".  
 // -- The player with the higher-scoring card is the winner of that round.
 // -- In the event of a tie, the cards remain in the pot and the new index[0] cards are also added to the pot directly.  Then, another round occurs.
@@ -58,7 +60,6 @@ class Deck {
     draw(p1, p2) {
         var pot = [];
         var winner = "";
-        var victor = "";
         var i = 0;
 
         while(!winner){
@@ -113,41 +114,54 @@ class Deck {
                 // console.log("TEST IF WAR ",pot);                               // TEST LOGGER - COMMENT OUT WHEN FINISHED
             }
 
-        } // END WHILE LOOP
+            this.rounds++;
+        } // END WHILE LOOP OF DECK.DRAW()
 
-        // THIS STATEMENT CHECKS END-OF-ROUND STATES
+        // BELOW: NON-VICTORY STATES
         if (p1.library.length != 0 && p2.library.length != 0 && winner){
             console.log(winner," wins the round!")
         }
         else if ((p1.library.length != 0 && p2.library.length != 0) && pot.length != 0) {
             console.log("There are ",pot.length," cards in the pot.")
         }
+
+        if(winner) {
+            console.log(p1.name," has ",(p1.library.length)," cards.  ",p2.name," has ",(p2.library.length)," cards.")
+        }
+
+        // BELOW: VICTORY STATES
         else if ((p1.library.length === 0 || p2.library.length === 0) && pot.length != 0) {
+            
             if (p1.library.length === 0) {
-                victor = p2.name;
+                winner = p2.name;
+                this.victor = p2.name;
             }
             else if (p2.library.length === 0) {
-                victor = p1.name;
+                winner = p2.name;
+                this.victor = p1.name;
             }
-            console.log("GAME OVER!!  ",victor," is the winner!!")
-            alert("GAME OVER!!  ",victor," is the winner!!")
+            
+            // CALL THIS.END() HERE!!!
+            this.end();
         }
         else if ((p1.library.length === 0 || p2.library.length === 0) && pot.length === 0) {
+            
             if (p1.library.length === 0) {
                 victor = p2.name;
             }
             else if (p2.library.length === 0) {
                 victor = p1.name;
             }
-            console.log("GAME OVER!!  ",victor," is the winner!!")
-            alert("GAME OVER!!  ",victor," is the winner!!")
+
+            // CALL THIS.END HERE!!!
+            this.end();
         }
-        console.log(p1.name," has ",(p1.library.length)," cards.  ",p2.name," has ",(p2.library.length)," cards.")
+        
 
     } // END DRAW FUNCTION
     
 
-// COMMAND: DRAW A RANDOM CARD (***DEPRECIATED***)    
+    // COMMAND: DRAW A RANDOM CARD (***DEPRECIATED***)    
     drawRandom() {
         // This method draws a random card from the deck, but is not used for the game of WAR
         let chosenCard = this.cards.splice([(Math.floor(Math.random()*this.cards.length))], 1)
@@ -156,7 +170,7 @@ class Deck {
 
 
 
-// COMMAND: SHUFFLE DECK
+    // COMMAND: SHUFFLE DECK
     shuffle() {
         // This very nice for loop is referred to as the "Fisher-Yates Shuffle".  I did not design it.
         for (let i = this.cards.length - 1; i > 0; i--) {
@@ -169,9 +183,9 @@ class Deck {
     }
 
 
-// COMMAND: SPLIT DECK BETWEEN PLAYERS
-// When a game is begun, the deck is split randomly between the two players using a for loop that selects a random index each iteration.
-// Additionally, the loop must alternate between the two players to split the deck.
+    // COMMAND: SPLIT DECK BETWEEN PLAYERS
+    // When a game is begun, the deck is split randomly between the two players using a for loop that selects a random index each iteration.
+    // Additionally, the loop must alternate between the two players to split the deck.
     split(p1, p2) {
         let i = 0;
         for(i=0; i<this.cards.length; i++) {
@@ -190,10 +204,13 @@ class Deck {
         // console.log(p2.library);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
     }
 
-// COMMAND - RESET
-// -- Prints the final score and declares a winner (the player with the higher score wins)
-// -- Resets player classes, emptying their properties
-// -- Resets deck, emptying the cards array and refilling it.
+    // COMMAND - RESET (***DEPRECIATED***)
+    // -- Prints the final score and declares a winner (the player with the higher score wins)
+    // -- Resets player classes, emptying their properties
+    // -- Resets deck, emptying the cards array and refilling it.
+    // (*** DEPRECIATED ***)
+
+    /*
     reset(d, p1, p2) {
         console.log(p1.name," has ",(p1.library.length)," cards.  ",p2.name," has ",(p2.library.length)," cards.")
         if (p1.library.length > p2.library.length){
@@ -210,6 +227,44 @@ class Deck {
         p1 = new Player(prompt("Player 1: Input your name"),[],0,[]);
         p2 = new Player(prompt("Player 2: Input your name"),[],0,[]);
     }
+    */
+
+    // COMMAND - START
+    // - Resets classes (passed as parameters to the method)
+    // - Initializes new Deck and Players
+    start(d, p1, p2) {
+        if (this.rounds) {
+            this.end();
+        }
+        console.log("A new game of WAR! has begun!  The name of this deck is ",d,"!");
+        alert("A new game of WAR! has begun!");
+        if(d){
+            // INSERT NEW DECK CONSTRUCTOR HERE 
+        }
+        if(!d){
+            this = new Deck();
+        }
+        p1 = new Player(p1,[],0,[]);
+        p2 = new Player(p2,[],0,[]);
+    }
+
+    // COMMAND - END
+    // - Checks VICTOR variable
+    // - Announces winner
+    // - Announces duration of match (number of rounds)
+    end() {
+        if(this.victor){
+            console.log("GAME OVER!!  ",victor," is the winner!!")
+            alert("GAME OVER!!  ",victor," is the winner!!")
+        }
+        else if(!this.victor){
+            console.log("GAME OVER!!  ",victor," is the winner!!")
+            alert("GAME OVER!!  ",victor," is the winner!!")
+        }
+        
+        console.log("The game lasted ",this.rounds," rounds!")
+    }
+    
 }
 
 
@@ -233,11 +288,7 @@ class Player {
 
 // RUNTIME
 
-var playerOne = new Player(prompt("Player 1: Input your name"),[],0,[]);
-
-var playerTwo = new Player(prompt("Player 2: Input your name"),[],0,[]);
-
-console.log(playerOne.name," has ",(playerOne.library.length)," cards.  ",playerTwo.name," has ",(playerTwo.library.length)," cards.")
-
 const war = new Deck();
+
+console.log("A new game has begun!  Use the formatting ''war.[command]'' to operate the game.")
 
