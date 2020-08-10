@@ -87,12 +87,6 @@ class Deck {
 
         while(!winner){
             
-            // BEST PRACTICES FOR FORMATTING FUNCTIONS THAT HANDLE CARD OBJECTS
-            // RULE 1:
-            // ALL.  VARIABLES.  ARE.  ARRAYS.  Whenever an index is pulled OUT OF an Array, it must also be placed INTO an Array.
-            // ALL.  VARIABLES.  ARE.  ARRAYS.  Holder variables will take input directly from SPLICE methods of other arrays.
-            // ALL.  VARIABLES.  ARE.  ARRAYS.  Functions that require holder variables as parameters will reference INDEX ZERO of that holder variable.
-            
             var card1 = p1.library.splice(0,1);
             var card2 = p2.library.splice(0,1);
             pot.push(card1);
