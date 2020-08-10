@@ -50,7 +50,7 @@ class Deck {
     
     console.log("A deck of cards was created!  It needs to be shuffled and split!");
 
-     console.log("TEST ONE ",this.cards);                                    // TEST LOGGER - COMMENT OUT WHEN FINISHED    
+    //console.log("TEST ONE ",this.cards);                                    // TEST LOGGER - COMMENT OUT WHEN FINISHED    
     }
 
     // COMMAND: EXECUTE ROUND (DRAW)
