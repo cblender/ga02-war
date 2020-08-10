@@ -58,6 +58,7 @@ class Deck {
     draw(p1, p2) {
         var pot = [];
         var winner = "";
+        var victor = "";
         var i = 0;
 
         while(!winner){
@@ -101,6 +102,7 @@ class Deck {
             }
 
             else if (card1[0].score === card2[0].score) {
+                console.log(p1.name," played a ",card1[0].value," of ",card1[0].suit,".  ",p2.name," played a ",card2[0].value," of ",card2[0].suit,".");
                 console.log("You both played a ",card1[0].value,"!  IT'S WAR!!")
                 var war1 = p1.library.splice(0,1);
                 var war2 = p2.library.splice(0,1);
@@ -113,11 +115,32 @@ class Deck {
 
         } // END WHILE LOOP
 
-        if (winner){
-            console.log(winner," is the winner!")
+        // THIS STATEMENT CHECKS END-OF-ROUND STATES
+        if (p1.library.length != 0 && p2.library.length != 0 && winner){
+            console.log(winner," wins the round!")
         }
-        else {
+        else if ((p1.library.length != 0 && p2.library.length != 0) && pot.length != 0) {
             console.log("There are ",pot.length," cards in the pot.")
+        }
+        else if ((p1.library.length === 0 || p2.library.length === 0) && pot.length != 0) {
+            if (p1.library.length === 0) {
+                victor = p2.name;
+            }
+            else if (p2.library.length === 0) {
+                victor = p1.name;
+            }
+            console.log("GAME OVER!!  ",victor," is the winner!!")
+            alert("GAME OVER!!  ",victor," is the winner!!")
+        }
+        else if ((p1.library.length === 0 || p2.library.length === 0) && pot.length === 0) {
+            if (p1.library.length === 0) {
+                victor = p2.name;
+            }
+            else if (p2.library.length === 0) {
+                victor = p1.name;
+            }
+            console.log("GAME OVER!!  ",victor," is the winner!!")
+            alert("GAME OVER!!  ",victor," is the winner!!")
         }
         console.log(p1.name," has ",(p1.library.length)," cards.  ",p2.name," has ",(p2.library.length)," cards.")
 
