@@ -1,13 +1,23 @@
+
+/*$$$$$$$$ /$$       /$$                 /$$      /$$                                               /$$      /$$  /$$$$$$  /$$$$$$$  /$$
+|__  $$__/| $$      |__/                | $$$    /$$$                                              | $$  /$ | $$ /$$__  $$| $$__  $$| $$
+   | $$   | $$$$$$$  /$$  /$$$$$$$      | $$$$  /$$$$  /$$$$$$   /$$$$$$  /$$$$$$$   /$$$$$$$      | $$ /$$$| $$| $$  \ $$| $$  \ $$| $$
+   | $$   | $$__  $$| $$ /$$_____/      | $$ $$/$$ $$ /$$__  $$ |____  $$| $$__  $$ /$$_____/      | $$/$$ $$ $$| $$$$$$$$| $$$$$$$/| $$
+   | $$   | $$  \ $$| $$|  $$$$$$       | $$  $$$| $$| $$$$$$$$  /$$$$$$$| $$  \ $$|  $$$$$$       | $$$$_  $$$$| $$__  $$| $$__  $$|__/
+   | $$   | $$  | $$| $$ \____  $$      | $$\  $ | $$| $$_____/ /$$__  $$| $$  | $$ \____  $$      | $$$/ \  $$$| $$  | $$| $$  \ $$    
+   | $$   | $$  | $$| $$ /$$$$$$$/      | $$ \/  | $$|  $$$$$$$|  $$$$$$$| $$  | $$ /$$$$$$$/      | $$/   \  $$| $$  | $$| $$  | $$ /$$
+   |__/   |__/  |__/|__/|_______/       |__/     |__/ \_______/ \_______/|__/  |__/|_______/       |__/     \__/|__/  |__/|__/  |__/|_*/
+
+// INTERNAL FORMATTING:
+// The "TEST LOGGER" comment indicates a line of code that should be removed after the program is complete.
+// This comment should ALWAYS be indented exactly 16 "Tabs".
+
 // INITIALIZE DECK
 // -- Create deck class
 //      - property: cards
 // The deck's main property is an array of objects (cards) that each have a SUIT, RANK, and SCORE property.
 // When the page is opened, the deck is initialized in a NONRANDOM order using nested for loops.
 // When the game is begun, the deck is split between the two players 
-
-// INTERNAL FORMATTING:
-// The "TEST LOGGER" comment indicates a line of code that should be removed after the program is complete.
-// This comment should ALWAYS be indented exactly 16 "Tabs".
 
 class Card {
     constructor(suit, value, score){
@@ -48,17 +58,17 @@ class Deck {
         var winner = "";
         var i = 0;
 
-        // while(!winner){
+        while(!winner){
             var card1 = p1.library.splice(0,1);     // NOTE!!!!!!  ||  FIND OUT HOW TO PASS THE *CONTENTS* OF library[0] to var!!!!!
             var card2 = p2.library.splice(0,1);     // IMPORTANT!  ||  MAKE SURE REFERENCES IN WHILE LOOP BELOW WORK PROPERLY!!!!!!!
             pot.push(card1);
             pot.push(card2);
             
-            console.log("TEST WHILE ",p1.name);                               // TEST LOGGER - COMMENT OUT WHEN FINISHED
-            console.log("TEST WHILE ",p2.name);
-            console.log("TEST WHILE ",card1);
-            console.log("TEST WHILE ",card2);
-            console.log("TEST WHILE ",pot);  
+            console.log("TEST WHILE ",p1.name);                                 // TEST LOGGER - COMMENT OUT WHEN FINISHED
+            console.log("TEST WHILE ",p2.name);                                 // TEST LOGGER - COMMENT OUT WHEN FINISHED
+            console.log("TEST WHILE ",card1);                                   // TEST LOGGER - COMMENT OUT WHEN FINISHED
+            console.log("TEST WHILE ",card2);                                   // TEST LOGGER - COMMENT OUT WHEN FINISHED
+            console.log("TEST WHILE ",pot);                                     // TEST LOGGER - COMMENT OUT WHEN FINISHED
                                               
             if (card1[0].score > card2[0].score) {
                 console.log(p1.name," played a ",card1[0].value," of ",card1[0].suit,".  ",p2.name," played a ",card2[0].value," of ",card2[0].suit,".");
@@ -96,7 +106,8 @@ class Deck {
                 
                 console.log("TEST IF WAR ",pot);                               // TEST LOGGER - COMMENT OUT WHEN FINISHED
             }
-        // } // END WHILE LOOP
+
+        } // END WHILE LOOP
 
         if (winner){
             console.log(winner," is the winner!")
@@ -143,8 +154,30 @@ class Deck {
                 p2.library.push(chosenCard);
             }
         }
+        console.log(playerOne.name," has ",(playerOne.library.length)," cards.  ",playerTwo.name," has ",(playerTwo.library.length)," cards.")
+
         console.log(p1.library);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
         console.log(p2.library);                                // TEST LOGGER - COMMENT OUT WHEN FINISHED
+    }
+
+// COMMAND - RESET
+// -- Prints the final score and declares a winner (the player with the higher score wins)
+// -- Resets player classes, emptying their properties
+// -- Resets deck, emptying the cards array and refilling it.
+    reset(d, p1, p2) {
+        console.log(p1.name," has ",(p1.library.length)," cards.  ",p2.name," has ",(p2.library.length)," cards.")
+        if (p1.library.length > p2.library.length){
+            console.log(p1.name," wins!!");
+        }
+        else if (p1.library.length < p2.library.length){
+            console.log(p2.name," wins!!");
+        }
+        else if (p1.library.length === p2.library.length){
+            console.log("The game is a draw!!");
+        }
+        d = new Deck();
+        p1 = new Player(prompt("Player 1: Input your name"),[],0,[]);
+        p2 = new Player(prompt("Player 2: Input your name"),[],0,[]);
     }
 }
 
@@ -167,15 +200,12 @@ class Player {
 
 
 
-// COMMAND - RESET
-// -- Prints the final score and declares a winner (the player with the higher score wins)
-// -- Resets player classes, emptying their properties
-// -- Resets deck, emptying the cards array and refilling it.
+
 
 
 // RUNTIME
 
-const WAR = new Deck();
+const war = new Deck();
 
 var playerOne = new Player(prompt("Player 1: Input your name"),[],0,[]);
 
@@ -185,11 +215,11 @@ var playerTwo = new Player(prompt("Player 2: Input your name"),[],0,[]);
 
 console.log(playerTwo.name);
 
-WAR.shuffle();
+war.shuffle();
 
-WAR.split(playerOne, playerTwo);
+war.split(playerOne, playerTwo);
 
 console.log(playerOne.name," has ",(playerOne.library.length)," cards.  ",playerTwo.name," has ",(playerTwo.library.length)," cards.")
 
-WAR.draw(playerOne, playerTwo);
+war.draw(playerOne, playerTwo);
 
